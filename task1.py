@@ -9,5 +9,4 @@ while number:
         bits += 1
         break
 
-
 print(bits)
