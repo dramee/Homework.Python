@@ -11,7 +11,8 @@ def my_sum(x, y):
 
 # plus_one = specialize(my_sum, 1)
 
+just_two = specialize(my_sum, 1, 1)
 
+# print(plus_one(2))
 
-print(plus_one(2))
-
+print(just_two())
