@@ -8,23 +8,20 @@ def deprecated(f=None, since=None, will_be_removed=None):
 
     @functools.wraps(f)
     def inner(*args, **kwargs):
-        if since is None and will_be_removed is None:
-            print(f"Warning: function {f.__name__} is deprecated."
-                  f" It will be removed in future versions.")
-        elif since is None:
-            print(f"Warning: function {f.__name__} is deprecated. It will be removed in version {will_be_removed}.")
-        elif will_be_removed is None:
-            print(f"Warning: function {f.__name__} is deprecated since version {since}."
-                  f" It will be removed in future versions.")
+        print(f"Warning: function {f.__name__} is deprecated", end="")
+        if not(since is None):
+            print(f" since version {since}", end="")
+        print(". It will be removed in", end=" ")
+        if not(will_be_removed is None):
+            print(f"version {will_be_removed}.")
         else:
-            print(f"Warning: function {f.__name__} is deprecated since version {since}."
-                  f" It will be removed in version {will_be_removed}.")
+            print("future versions.")
         ret = f(*args, **kwargs)
         return ret
     return inner
 
 
-@deprecated(since=2, will_be_removed=3)
+@deprecated(since=2.1231)
 def my_sum(x, y):
     return x + y
 
