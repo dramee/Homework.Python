@@ -1,0 +1,24 @@
+def format_table(benchmarks, algos, results):
+    names = ["Benchmark"] + algos
+    lengths = [len(max(benchmarks + ["Benchmark"], key=len))]
+    for i in range(len(algos)):
+        lengths.append(len(max([algos[i]] + [str(res[i]) for res in results], key=len)))
+    for i in range(len(benchmarks) + 1):
+        print("|", end="")
+        for j in range(len(lengths)):
+            if i == 0:
+                print(f" {names[j]}" + " " * (1 + lengths[j] - len(names[j])), end="|")
+            else:
+                if j == 0:
+                    print(f" {benchmarks[i - 1]}" + " " * (1 + lengths[j] - len(benchmarks[i - 1])), end="|")
+                else:
+                    print(f" {results[i-1][j-1]}" + " " * (1 + lengths[j] - len(str(results[i-1][j-1]))), end="|")
+        if i == 0:
+            print("\n" + "|" + "-" * ((-1 + sum(lengths)) + 3 * len(lengths)) + "|")
+        else:
+            print()
+    pass
+
+
+format_table(["best case", "the medium case", "the worst case"], ["quick sort", "merge sort", "bubble sort"],
+             [[1.23, 1.56, 2.0], [2.23, 2.01, 2.81], [3.3, 2.9, 3.9]])
