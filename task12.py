@@ -1,7 +1,6 @@
 def cycle(lst):
     while True:
-        for i in lst:
-            yield i
+        yield from lst
 
 
 def take(seq, n):

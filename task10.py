@@ -6,6 +6,9 @@ class LRUCache:
 
     def __init__(self, capacity=16):
         self.cap = capacity
+        self.cache = {}
+        self.add_time = {}
+        self.count = 0
 
     def put(self, key, value):
         if key not in LRUCache.cache.keys():
@@ -13,17 +16,11 @@ class LRUCache:
                 # print("=" * 100)
                 # print("DELETE PROCESS")
                 # print("=" * 100)
-                m = -1
-                key_to_del = None
-                for old_key in LRUCache.cache.keys():
-                    diff = LRUCache.count - LRUCache.add_time[old_key]
-                    if diff > m:
-                        m = diff
-                        key_to_del = old_key
+                key_to_del = min(LRUCache.cache.keys(), key=lambda k: LRUCache.add_time[k])
                 LRUCache.cache.pop(key_to_del)
                 LRUCache.add_time.pop(key_to_del)
             LRUCache.cache[key] = value
-            LRUCache.add_time[key] = 0
+            LRUCache.add_time[key] = LRUCache.count
 
     def get(self, key):
         LRUCache.count += 1

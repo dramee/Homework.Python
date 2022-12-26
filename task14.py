@@ -1,4 +1,6 @@
+import functools
 def coroutine(func, *args, **kwargs):
+    @functools.wraps(func)
     def wrapper():
         new_el = func(*args, **kwargs)
         new_el.send(None)
