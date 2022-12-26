@@ -1,36 +1,75 @@
 import numpy as np
 from random import randint
+from collections import namedtuple
+from time import time
 
 
-def check_dead_or_alive(arr, x, y):
-    counter = 0
-    for i in range(-1, 1):
-        for j in range(-1, 1):
-            if arr[x + i][y + j] == 1:
-                counter += 1
-    if arr[x][y] == 1:
-        if counter < 2 or counter > 3:
-            arr[x][y] = 0
-    else:
-        if counter == 3:
-            arr[x][y] = 1
-    return field
-
-
-DIM = 8
+DIM = 50
 
 field = [[randint(0, 1) for i in range(DIM)] for j in range(DIM)]
+np_field = np.array(field)
 
 
-for i in range(DIM):
-    print(field[i])
+def find_neighbourhood(x, y):
+    check_x = list(range(-1, 2))
+    check_y = list(range(-1, 2))
+    if y == 0:
+        check_y.pop(0)
+    elif y == DIM - 1:
+        check_y.pop(-1)
+    if x == 0:
+        check_x.pop(0)
+    elif x == DIM - 1:
+        check_x.pop(-1)
+    neighborhood = namedtuple("neighborhood", ["check_x", "check_y"])
+    neighborhood.check_x = check_x
+    neighborhood.check_y = check_y
+    return neighborhood
 
-print()
 
-for j in range(DIM):
-    for k in range(DIM):
-        field = check_dead_or_alive(field, j, k)
+def alive_or_dead(field, x, y):
+    neighbourhood = find_neighbourhood(x, y)
+    alive_counter = 0
+    main_cell = None
+    for i in neighbourhood.check_x:
+        for j in neighbourhood.check_y:
+            if i == 0 and j == 0:
+                main_cell = field[y][x]
+            else:
+                if field[y + j][x + i]:
+                    alive_counter += 1
+    if main_cell and (alive_counter < 2 or alive_counter > 3):
+        field[y][x] = 0
+    elif not main_cell and alive_counter == 3:
+        field[y][x] = 1
+    pass
 
 
-for i in range(DIM):
-    print(field[i])
+def life_game(field):
+    start = time()
+    for itr in range(128):
+        for y in range(DIM):
+            for x in range(DIM):
+                alive_or_dead(field, x, y)
+    end = time()
+    return end - start
+
+
+# for ln in field:
+#     print(ln)
+
+# print()
+
+python_time = life_game(field)
+
+# for ln in field:
+#     print(ln)
+
+# print(np_field)
+# print()
+
+numpy_time = life_game(np_field)
+
+# print(np_field)
+
+print(f"python time: {python_time}", f"numpy_time: {numpy_time}", sep="\n")
