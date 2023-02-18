@@ -4,7 +4,7 @@ from collections import namedtuple
 from time import time
 
 
-DIM = 50
+DIM = 64
 
 field = [[randint(0, 1) for i in range(DIM)] for j in range(DIM)]
 np_field = np.array(field)
